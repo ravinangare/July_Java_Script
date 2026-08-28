@@ -32,3 +32,19 @@ test('Locators Test with getByAltText',async({page})=>{
     await expect(page.getByAltText("orangehrm-logo").last()).toBeVisible();
 
 })
+
+test('Locators Test with getByTitle',async({page})=>{
+    await page.goto("https://testautomationpractice.blogspot.com/p/playwrightpractice.html")
+    await page.getByTitle('Home page link').click()
+    await page.getByTitle("HyperText Markup Language").click()
+    await expect(page.getByTitle("Tooltip text")).toBeVisible()
+    await page.getByTitle("Click to save your changes").click()
+})
+
+test('Locators Test with getByTestId',async({page})=>{
+    await page.goto("https://testautomationpractice.blogspot.com/p/playwrightpractice.html")
+    await expect(page.getByTestId("profile-name")).toBeVisible()
+    await expect(page.getByTestId("profile-email")).toBeVisible()
+    await page.getByTestId("edit-profile-btn").click()
+
+})
