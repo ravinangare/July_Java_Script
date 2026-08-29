@@ -73,3 +73,8 @@ test('starts with, Ends With & contains',async({page})=>{
     await page.locator('[placeholder$="Address"]').fill('Ambegaon Pune') // ends with
     await page.locator('[id*="jectsInp"]').fill('English')  // contains
 })
+
+test('CSS locator with filter',async({page})=>{
+    await page.goto('https://demoqa.com/automation-practice-form')
+    await page.locator('[class="form-check form-check-inline"]').filter({hasText: 'Reading'}).click()
+})
