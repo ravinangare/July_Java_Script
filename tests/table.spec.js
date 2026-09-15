@@ -44,3 +44,38 @@ test('Dynamic Table',async({page})=>{
     const chromeCPULoad = await page.locator("strong.chrome-cpu").textContent()
     expect(chromeCPULoad).toEqual(cpuLoadChrome)
 })
+
+test.only('Pagination Table',async({page})=>{
+    await page.goto('https://testautomationpractice.blogspot.com/')
+    const paginationTable = await page.locator('#productTable')
+    await expect(paginationTable).toBeVisible();
+    const tableButtons = await page.locator("#pagination a")
+    const pageCount = await tableButtons.count();
+    expect(pageCount).toEqual(4)
+
+    const allproducts = [];
+    const searchProduct = "Smartphone";
+    let productFound = false;
+    for(let pageNum = 1; pageNum <= pageCount;pageNum++){
+        const ActiveBtn = await page.locator("ul.pagination a[class='active']");
+        await expect(ActiveBtn).toHaveText(`${pageNum}`)
+        const rows = await paginationTable.locator("tbody tr")
+        const rowscount = await rows.count()
+        console.log("Rows on page " +pageNum+ "rows count for" +rowscount)
+        for(let i =0;i<rowscount;i++){
+            const idcolumn = await rows.nth(i).locator("td").nth(0).textContent()
+            const ProductName = await rows.nth(i).locator("td").nth(1).textContent()
+            if(ProductName.includes(searchProduct)){
+                productFound = true;
+                console.log(productFound)
+                const productPrice = await rows.nth(i).locator("td").nth(2).textContent()
+                console.log(await productPrice)
+            }
+            if(pageNum<pageCount){
+                const nextBtn = await page.locator("#pagination a",{hasText: `${pageNum + 1}`})
+                await nextBtn.click()
+                await page.waitForLoadState('networkidle')
+            }
+        }
+    }
+})
