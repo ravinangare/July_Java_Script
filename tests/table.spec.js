@@ -54,7 +54,7 @@ test.only('Pagination Table',async({page})=>{
     expect(pageCount).toEqual(4)
 
     const allproducts = [];
-    const searchProduct = "Smartphone";
+    const searchProduct = "Television";
     let productFound = false;
     for(let pageNum = 1; pageNum <= pageCount;pageNum++){
         const ActiveBtn = await page.locator("ul.pagination a[class='active']");
@@ -65,17 +65,27 @@ test.only('Pagination Table',async({page})=>{
         for(let i =0;i<rowscount;i++){
             const idcolumn = await rows.nth(i).locator("td").nth(0).textContent()
             const ProductName = await rows.nth(i).locator("td").nth(1).textContent()
+            const productPrice = await rows.nth(i).locator("td").nth(2).textContent()
             if(ProductName.includes(searchProduct)){
                 productFound = true;
                 console.log(productFound)
-                const productPrice = await rows.nth(i).locator("td").nth(2).textContent()
                 console.log(await productPrice)
             }
-            if(pageNum<pageCount){
-                const nextBtn = await page.locator("#pagination a",{hasText: `${pageNum + 1}`})
-                await nextBtn.click()
-                await page.waitForLoadState('networkidle')
-            }
+             const product = {
+            id : idcolumn.trim(),
+            product: ProductName.trim(),
+            price : productPrice.trim()
+        };
+        allproducts.push(product);
+        }
+        if(pageNum<pageCount){
+            const nextBtn = page.locator("#pagination a",{hasText: `${pageNum + 1}`})
+            await nextBtn.click()
+            await expect(page.locator("ul.pagination a[class='active']")).toHaveText(`${pageNum + 1}`)
         }
     }
+    expect(productFound).toBeTruthy()
+    expect(allproducts.length).toEqual(20)
+    console.log(allproducts.length)
+    console.log(allproducts)
 })
