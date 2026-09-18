@@ -24,7 +24,7 @@ test('File Download test',async({page})=>{
     await page.goto("https://testautomationpractice.blogspot.com/p/download-files_25.html")
     await page.locator("textarea#inputText").fill("utkarshaa Academy")
     await page.getByText("Generate and Download Text File").click();
-    const downloadPromise = await page.waitForEvent('download')
+    const downloadPromise = page.waitForEvent('download')
     await page.getByText("Download Text File",{exact:true}).click()
     const download = await downloadPromise;
     await download.saveAs('downloads/info1.txt')
