@@ -1,3 +1,4 @@
+const XLSX = require('xlsx')
 class ExcelUtils{
     static readSheet(filePath, SheetName){
         const workbook = XLSX.readFile(filePath);
