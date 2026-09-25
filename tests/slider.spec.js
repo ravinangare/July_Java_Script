@@ -22,4 +22,5 @@ test('Handle price range slider', async ({ page }) => {
   }
 
   await expect(amount).toHaveValue('$100 - $400');
+  await page.waitForTimeout(5000)
 });
