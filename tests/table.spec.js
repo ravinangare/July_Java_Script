@@ -45,7 +45,7 @@ test('Dynamic Table',async({page})=>{
     expect(chromeCPULoad).toEqual(cpuLoadChrome)
 })
 
-test.only('Pagination Table',async({page})=>{
+test('Pagination Table',async({page})=>{
     await page.goto('https://testautomationpractice.blogspot.com/')
     const paginationTable = await page.locator('#productTable')
     await expect(paginationTable).toBeVisible();
