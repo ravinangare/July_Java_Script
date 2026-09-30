@@ -38,7 +38,7 @@ export default defineConfig({
     },
     screenshot: 'on',
     video: 'on',
-    headless: true
+    headless: false
   },
 
   /* Configure projects for major browsers */
