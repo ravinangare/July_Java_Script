@@ -59,7 +59,7 @@ test.fail('Fifth Test',async({page})=>{
     await expect(await page.getByRole('heading',{name:'Dashboard'})).not.toBeVisible()
 })
 
-test('Sixth Test',async({page,browserName})=>{
+test('Sixth Test @regression',async({page,browserName})=>{
     test.fail(browserName === 'firefox')
     await page.goto("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login")
     const username = await page.getByPlaceholder("Username")
@@ -83,7 +83,7 @@ test.fixme('Seventh Test',async({page})=>{
 
 // slow - triplets the timeout (30 seconds * 3 = 90 seconds)
 
-test('Eight Test',async({page})=>{
+test('Eight Test @smoke',async({page})=>{
     test.slow()
     await page.goto("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login")
     const username = await page.getByPlaceholder("Username")
@@ -95,7 +95,7 @@ test('Eight Test',async({page})=>{
 })
 
 // describe - groups related test cases
-test.describe("Login Module",()=>{
+test.describe("Login Module @regression @sanity",()=>{
     test.describe.configure({
         mode: 'parallel',
         retries: 1,
