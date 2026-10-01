@@ -1,16 +1,21 @@
-class loginpage{
-    constructor(page){
-        this.page = page;
+import { Basepage } from '../pages/Basepage';
+
+class loginpage extends Basepage {
+   constructor(page){
+        super(page);
         // locators
         this.username = page.getByRole('textbox', { name: 'Username' });
         this.password = page.getByRole('textbox', { name: 'Password' });
         this.loginBtn = page.getByRole('button', { name: 'Login' });
         this.invalidcreds = page.getByText('Invalid credentials');
+        this.url = "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login";
+     
     }
     // action methods
-    async naviagate(){
-        await this.page.goto("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login")
+    async navigate(url = this.url){
+        await super.navigate(url)
     }
+
     async validLogin(username,password){
         await this.username.fill(username)
         await this.password.fill(password)
