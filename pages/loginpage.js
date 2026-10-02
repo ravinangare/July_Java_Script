@@ -11,9 +11,13 @@ class loginpage extends Basepage {
         this.url = "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login";
      
     }
-    // action methods
+  //  action methods
     async navigate(url = this.url){
         await super.navigate(url)
+    }
+
+    async naviagate(url = this.url){
+        await this.navigate(url)
     }
 
     async validLogin(username,password){
@@ -22,11 +26,16 @@ class loginpage extends Basepage {
         await this.loginBtn.click()
     }
 
-        async InvalidLogin(invalidusername,password){
+    async invalidLogin(invalidusername,password){
         await this.username.fill(invalidusername)
         await this.password.fill(password)
         await this.loginBtn.click()
     }
+
+    async InvalidLogin(invalidusername,password){
+        await this.invalidLogin(invalidusername, password)
+    }
+
     async getErrorMessage(){
         return await this.invalidcreds.textContent();
     }
