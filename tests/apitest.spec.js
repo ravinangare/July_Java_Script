@@ -46,7 +46,7 @@ test('Token Generation API Test',async({request})=>{
 })
 
 test('User Authorized API Test',async({request})=>{
-   const response = await request.post('https://demoqa.com/Account/v1/Authorized',{
+   const response = await request.post(`${API_Account_url}/Authorized`,{
         data: {
             "userName": registeredUserName,
             "password": "Test@123"
@@ -67,7 +67,7 @@ test('User Authorized API Test',async({request})=>{
 // })
 
 test('Get All Books API Test',async({request})=>{
-    const response = await request.get('https://demoqa.com/BookStore/v1/Books')
+    const response = await request.get(`${API_BookStore_url}/Books`)
     expect(response.status()).toBe(200);
     const responseBody = await response.json();
     expect(responseBody).toHaveProperty('books');
@@ -87,7 +87,7 @@ test('Get All Books API Test',async({request})=>{
 })
 
 test('Get Book By ISBN API Test',async({request})=>{
-    const response = await request.get(`https://demoqa.com/BookStore/v1/Book?ISBN=${isbn}`)
+    const response = await request.get(`${API_BookStore_url}/Book?ISBN=${isbn}`)
     expect(response.status()).toBe(200);
     const responseBody = await response.json();
     console.log(await responseBody);
@@ -102,13 +102,13 @@ test('Get Book By ISBN API Test',async({request})=>{
     expect(responseBody).toHaveProperty('website');
 
     const author = responseBody.author;
-    expect(author).toBe('Addy Osmani')
+    expect(author).toBe('Richard E. Silverman')
     const pageCount = responseBody.pages;
-    expect(pageCount).toBe(254)
+    expect(pageCount).toBe(234)
 })
 
 test('Get User API Test',async({request})=>{
-    const response = await request.get(`https://demoqa.com/Account/v1/User/${userID}`,{
+    const response = await request.get(`${API_Account_url}/User/${registerduserId}`,{
         headers: {
             'Authorization': `Bearer ${token}`
         }
@@ -120,14 +120,26 @@ test('Get User API Test',async({request})=>{
 
 test('update Books API Test',async({request})=>{
 
-    const response = await request.put(`https://demoqa.com/BookStore/v1/Books/${isbn}`,{
+    const addBookResponse = await request.post(`${API_BookStore_url}/Books`,{
+        headers:{
+            'Authorization': `Bearer ${token}`
+        },
+         data: {
+            "userId": registerduserId,
+            "collectionOfIsbns": [{isbn}]
+        }
+    })
+    expect(await addBookResponse.status()).toBe(201)
+    console.log(await addBookResponse.json());
+
+    const response = await request.put(`${API_BookStore_url}/Books/${isbn}`,{
         headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
         },
         data: {
             "isbn": newIsbn,
-            "userId": userID,
+            "userId": registerduserId,
         }
     })
     expect(response.status()).toBe(200);
@@ -135,6 +147,15 @@ test('update Books API Test',async({request})=>{
     console.log(await responseBody);
 })
 
+
+test('User Delete API Test',async({request})=>{
+    const response = await request.delete(`${API_Account_url}/User/${registerduserId}`,{
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    expect(response.status()).toBe(204);
+})
 // test('update Books API with partial data Test',async({request})=>{
 //     const userID = 'decdff2d-b302-45bc-9852-483f0b1c4a76'
 //     const token = '******'
